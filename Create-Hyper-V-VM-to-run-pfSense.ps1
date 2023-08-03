@@ -12,6 +12,7 @@ Create the VM (generation 2, static memory) if it does not already exist.
 Configure the VM (with 1 vCPU, checkpoints disabled (because for me it runs in my POC Demo environment), and VM notes configured).
 Add a second Network adapter.
 Create the Virtual Hard Disk folder.
+Create a virtual disk (.vhdx) and attach it to the VM.
 Disable VM Checkpoints for the Hyper-V virtual machine.
 Add information to the VM Notes field.
 
@@ -65,6 +66,9 @@ $automaticStartAction = "StartIfRunning" # Action that is run when the Hyper-V s
 $automaticStartDelay = 60 # Number of seconds to wait before the automatic start action is run
 $automaticStopAction = "Save" # Action that is run when the Hyper-V service is stopping
 $vmLocFull = $vmLoc + $vmName
+$vhdxDrive = $vmName + "-1" + ".vhdx"
+$vhdxLocation = $vmLoc + $vmName + "\" + $vhdxFolder + "\"  + $vhdxDrive
+$diskSize = 2GB                           
 
 Set-PSBreakpoint -Variable currenttime -Mode Read -Action {$global:currenttime = Get-Date -Format "dddd MM/dd/yyyy HH:mm"} | Out-Null 
 $foregroundColor1 = "Green"
@@ -144,6 +148,19 @@ Write-Host ($writeEmptyLine + "# Second Network Adaptor added and connected to v
 New-Item -Path $vmLocFull -Name $vhdxFolder -ItemType "directory" | Out-Null
 
 Write-Host ($writeEmptyLine + "# Virtual Hard Disk folder created" + $writeSeperatorSpaces + $currentTime)`
+-foregroundcolor $foregroundColor2 $writeEmptyLine
+
+## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Create a virtual disk (.vhdx) and attach it to the VM
+
+# Create .vhdx
+New-VHD -SizeBytes $diskSize -Path $vhdxLocation | Out-Null
+
+# Attach .vhdx
+Add-VMHardDiskDrive -VMName $vmName -Path $vhdxLocation -ControllerType SCSI -ControllerNumber 0 | Out-Null
+
+Write-Host ($writeEmptyLine + "# New .vhdx created an attached to VM $vmName" + $writeSeperatorSpaces + $currentTime)`
 -foregroundcolor $foregroundColor2 $writeEmptyLine
 
 ## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
