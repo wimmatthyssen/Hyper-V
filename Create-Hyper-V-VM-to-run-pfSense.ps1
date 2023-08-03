@@ -114,7 +114,7 @@ Set-VM -Name $vmName `
     -AutomaticStartAction $automaticStartAction `
     -AutomaticStartDelay $automaticStartDelay `
     -AutomaticStopAction $automaticStopAction `
-    -AutomaticCheckpointsEnabled $false | Out-Null #Checkpoints will be disabled (POC/Demo environment), set to $true to enable them
+    -AutomaticCheckpointsEnabled $false | Out-Null 
 
 Write-Host ($writeEmptyLine + "# VM $vmName is created" + $writeSeperatorSpaces + $currentTime)`
 -foregroundcolor $foregroundColor2 $writeEmptyLine
