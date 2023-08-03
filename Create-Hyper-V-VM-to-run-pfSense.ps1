@@ -36,7 +36,7 @@ Run on Hyper-V host
 
 .LINK
 
-https://wmatthyssen.com/2023/07/19/combine-a-static-website-hosted-on-an-azure-storage-account-with-azure-cdn-by-using-an-azure-powershell-script/
+https://wmatthyssen.com/2023/08/03/create-a-hyper-v-vm-to-run-pfsense-with-a-powershell-script/
 #>
 
 ## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
