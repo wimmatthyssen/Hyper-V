@@ -8,10 +8,10 @@ A script used to create a Hyper-V VM for running pfSense.
 A script used to create a Hyper-V VM for running pfSense.
 This script will do all of the following:
 
-Create the VM if it does not already exist.
-Configure the VM.
+Create the VM (generation 2, static memory) if it does not already exist.
+Configure the VM (with 1 vCPU, checkpoints disabled (because for me it runs in my POC Demo environment), and VM notes configured).
 Add a second Network adapter.
-Create Virtual Hard Disk folder.
+Create the Virtual Hard Disk folder.
 Disable VM Checkpoints for the Hyper-V virtual machine.
 Add information to the VM Notes field.
 
@@ -58,10 +58,8 @@ $networkSwitch2 = #<your WAN Network Switch name here> Name of the Network Switc
 $vhdxFolder = #<your virtual hard disks folder name here> The name of the virtual hard disks folder. Example: "Virtual Hard Disks"
 $vmNotes = #<your VM notes here> The VM notes here. Example: "Role: pfSense Firewall"+"`r`n"+"VM Generation: $vmGen"
 
-$vmObject = $null
-$vmGen = "1" # VM Generation
+$vmGen = "2" # VM Generation
 $vmRamStatic = 1GB # Static memory assigned to the VM
-$bootDevice = "IDE" # Boot device of the VM
 $vCPU = 1 # Number of virtual CPUs
 $automaticStartAction = "StartIfRunning" # Action that is run when the Hyper-V service is starting (Nothing, Start, StartIfRunning)
 $automaticStartDelay = 60 # Number of seconds to wait before the automatic start action is run
@@ -84,10 +82,10 @@ Write-Host ($writeEmptyLine + "# Script started. Without errors, it can take up 
 
 ## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Create the VM if it does not already exist
+## Create the VM (generation 2, static memory) if it does not already exist
 
 try {
-    $vmObject = Get-VM -Name $vmName -ErrorAction Stop
+    Get-VM -Name $vmName -ErrorAction Stop
     Write-Host ($writeEmptyLine + "# VM $vmName already exists, please validate" + $writeSeperatorSpaces + $currentTime)`
     -foregroundcolor $foregroundColor3 $writeEmptyLine
     Start-Sleep -s 3
@@ -101,8 +99,7 @@ try {
     -NoVHD `
     -Generation $vmGen `
     -MemoryStartupBytes $vmRamStatic `
-    -SwitchName $networkSwitch1 `
-    -BootDevice $bootDevice | Out-Null 
+    -SwitchName $networkSwitch1 | Out-Null 
 }
 
 Write-Host ($writeEmptyLine + "# VM $vmName is created" + $writeSeperatorSpaces + $currentTime)`
@@ -110,16 +107,25 @@ Write-Host ($writeEmptyLine + "# VM $vmName is created" + $writeSeperatorSpaces 
 
 ## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Configure the VM
+## Configure the VM (with 1 vCPU, checkpoints disabled (because for me it runs in my POC Demo environment), and VM notes configured)
 
 Set-VM -Name $vmName `
     -ProcessorCount $vCPU `
     -AutomaticStartAction $automaticStartAction `
     -AutomaticStartDelay $automaticStartDelay `
     -AutomaticStopAction $automaticStopAction `
-    -AutomaticCheckpointsEnabled $false | Out-Null
+    -AutomaticCheckpointsEnabled $false | Out-Null #Checkpoints will be disabled (POC/Demo environment), set to $true to enable them
 
 Write-Host ($writeEmptyLine + "# VM $vmName is created" + $writeSeperatorSpaces + $currentTime)`
+-foregroundcolor $foregroundColor2 $writeEmptyLine
+
+## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Disable Secure Boot
+
+Set-VMFirmware -VMName $vmName -EnableSecureBoot Off
+
+Write-Host ($writeEmptyLine + "# Secure Boot disabled" + $writeSeperatorSpaces + $currentTime)`
 -foregroundcolor $foregroundColor2 $writeEmptyLine
 
 ## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,7 +172,3 @@ Write-Host ($writeEmptyLine + "# Script completed" + $writeSeperatorSpaces + $cu
 -foregroundcolor $foregroundColor1 $writeEmptyLine 
 
 ## ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-  
