@@ -27,7 +27,6 @@ Last modified:  28/08/2023
 Author:         Wim Matthyssen
 Version:        1.0
 PowerShell:     5.1
-Requires:       PowerShell Az (v7.4.0) Module
 Action:         Change variables were needed to fit your needs. 
 Disclaimer:     This script is provided "As Is" with no warranties.
 
