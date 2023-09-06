@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
 
-A script used for configuring prerequisites to set up an SCVMM management server (2022).
+A script used for configuring the required software prerequisites to set up an SCVMM management server (2022).
 
 .DESCRIPTION
 
-A script used for configuring prerequisites to set up an SCVMM management server (2022).
+A script used for configuring the required software prerequisites to set up an SCVMM management server (2022).
 This script will do all of the following:
 
 Check if PowerShell runs as Administrator, otherwise, exit the script.
