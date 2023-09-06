@@ -13,4 +13,8 @@ Currenently this repository holds the following PowerShell scritps:
  - **Create-Hyper-V-VM-to-run-pfSense.ps1**
 
    More information about this PowerShell script to create a Hyper-V virtual machine (VM) to run the open-source firewall and routing software pfSense can be found on my blog: https://wmatthyssen.com/2023/08/03/create-a-hyper-v-vm-to-run-pfsense-with-a-powershell-script/
+
+ - **Configure-SCVMM-software-prerequisites.ps1**
+
+   More information about this PowerShell script to install all the necessary software prerequisites on the SCVMM management server when deploying System Center Virtual Machine Manager (SCVMM) 2022 can be found on my blog: https://wmatthyssen.com/2023/08/29/configure-scvmm-2022-required-software-prerequisites-with-a-powershell-script/
    
